@@ -16,10 +16,10 @@ const Products = (prop) => {
 
     const [product, setProduct] = useState([])
     useEffect(()=>{
-        const getProducts = () =>{
+        const getProducts = async () =>{
             const AllProduct = [];
             let path = `products-${prop.type.toUpperCase()}`;
-            getDocs(collection(db,path)).then((SnapShot)=>{
+            await getDocs(collection(db,path)).then((SnapShot)=>{
                 SnapShot.forEach((doc)=>{
                     AllProduct.push({...doc.data(),id:doc.id})
                 })
@@ -39,7 +39,7 @@ const Products = (prop) => {
             <div className=' flex flex-wrap justify-around gap-5 items-center'>
             {
                 product.map((data)=>{
-                    return <ProductItems key = {data.id} items = {data} />
+                    return <ProductItems key = {data.id} items = {data} type = {prop.type} />
                 })
             }
             </div>

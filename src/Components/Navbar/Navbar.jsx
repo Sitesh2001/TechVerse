@@ -6,7 +6,6 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { BsHandbag, BsQuestionCircle } from "react-icons/bs";
 import { auth } from "../../firebase";
-import { FaHeart } from "react-icons/fa";
 
 export const Navbar = () => {
   const [value, setValue] = useState(0);
@@ -21,7 +20,6 @@ export const Navbar = () => {
 
   useEffect(() => {
     if (islogged) {
-      setValue(CurrentUser[0].cart);
       setUserName(CurrentUser[0].username)
     }
   }, [CurrentUser]);
@@ -60,11 +58,16 @@ export const Navbar = () => {
   }, []);
 
   const isCart = () =>{
-    navigate("/cart")
+    if (islogged) {
+      navigate("/cart/abc")
+    }
+    else{
+      openModal();
+    }
   }
 
   // Cart Modal
-  const openModal = () =>{
+  function openModal(){
     setIsModalOpen(true);
   }
 
@@ -170,19 +173,11 @@ export const Navbar = () => {
                 </button>
               </li>
             ) : (
-              <li>
-                {/* Like icon */}
-                <button
-                  onClick={toggleUser}
-                  className="block text-[1.7rem] text-blue-500 bg-transparent hover:scale-125 transition-all"
-                >
-                  <FaHeart />
-                </button>
-              </li>
+              <></>
             )}
             {/* cart button */}
             <li>
-              <button onClick={islogged?isCart:openModal}
+              <button onClick={isCart}
                 className={` ${
                   value > 0 ? " text-blue-600" : " text-slate-600"
                 } block relative text-center text-[1.7rem] bg-transparent hover:scale-125 transition-all`}
