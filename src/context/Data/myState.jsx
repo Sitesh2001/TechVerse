@@ -96,6 +96,7 @@ function MyState(props) {
   
   const CurrentUser = GetUser();
 
+
   return (
     <MyContext.Provider value={{islogged, CurrentUser ,productsWithId}}>
       {props.children}
