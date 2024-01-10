@@ -42,6 +42,7 @@ export default function Cart() {
           for (const dataDoc of querySnapshot.docs) {
 
             const item = dataDoc.data();
+            console.log(item.quantity);
             const productCollectionRef = collection(
               db,
               `products-${item.category.toUpperCase()}`
@@ -72,6 +73,7 @@ export default function Cart() {
     (sum, item) => sum + Number(item.price),
     0
   );
+
 
   return (
     <Layout>
