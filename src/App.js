@@ -4,12 +4,12 @@ import LogIn from "./Pages/LogIn";
 import SignUp from "./Pages/SignUp";
 import Order from "./Pages/Order";
 import Payment from "./Pages/Payment";
-import User from "./Pages/User";
 import Cart from "./Pages/Cart";
 import NoPage from "./Pages/NoPage";
 import MyState from "./context/Data/myState";
 import Products from "./Components/HomeItems/Products";
 import Productpage from "./Pages/Productpage";
+import { Brands } from "./Components/Stocks/Brands";
 
 function App() {
   return (
@@ -22,7 +22,6 @@ function App() {
           <Route path="/register" element = {<SignUp/>}/>
           <Route path="/order" element = {<Order/>} />
           <Route path="/payment" element = {<Payment/>} />
-          <Route path="/:username" element = {<User/>} />
           <Route path="/cart/:id" element = {<Cart/>} />
           <Route path="*" element = {<NoPage/>} />
           <Route path="/mobiles" element = {<Products type = "Mobile" alias = "Smart Phones"/>}/>
@@ -35,6 +34,7 @@ function App() {
           <Route path="/newProducts" element = {<Products type = 'NewProducts' />}/>
           <Route path="/topSellings" element = {<Products type = 'TopSellings' />}/>
           <Route path="/:type/:id" element = {<Productpage/>}/>
+          <Route path="/brands" element = {<Brands/>}/>
         </Routes>
       </Router>
       </MyState>

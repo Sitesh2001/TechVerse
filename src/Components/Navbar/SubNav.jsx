@@ -12,7 +12,6 @@ export const SubNav = () => {
             <li className='text-center text-[15px] font-medium hover:text-blue-800 text-ellipsis whitespace-nowrap transition-all cursor-pointer'> <Link to='/tablets'> Tablets </Link> </li>
             <li className='text-center hidden md:block text-[15px] font-medium hover:text-blue-800 text-ellipsis whitespace-nowrap transition-all cursor-pointer'> <Link to='/bluetooths' >Blutooth</Link> </li>
             <li className='text-center hidden md:block text-[15px] font-medium hover:text-blue-800 text-ellipsis whitespace-nowrap transition-all cursor-pointer'> <Link to='/smartwatch'>Watch</Link> </li>
-            <li className='text-center text-[15px] font-medium hover:text-blue-800 text-ellipsis whitespace-nowrap transition-all cursor-pointer'> <Link to='/products'>More</Link> </li>
         </ul>
     </div>
     </div>

@@ -13,10 +13,11 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const [userName,setUserName ] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   
   // context data
   const context = useContext(myContext);
-  const { islogged, CurrentUser } = context;
+  const { islogged, CurrentUser, productsWithId } = context;
 
   useEffect(() => {
     if (islogged) {
@@ -59,11 +60,23 @@ export const Navbar = () => {
 
   const isCart = () =>{
     if (islogged) {
-      navigate("/cart/abc")
+      navigate("/cart/products")
     }
     else{
       openModal();
     }
+  }
+
+  // Search
+
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase(); // Convert search term to lowercase
+    setSearchTerm(searchTerm); // Update search term in state
+  };
+
+
+  const searchdata = () =>{
+    navigate(`/brands?search=${searchTerm}`)
   }
 
   // Cart Modal
@@ -98,7 +111,7 @@ export const Navbar = () => {
         <div className="flex">
           {/* search section for desktop */}
           <div className="relative md:block">
-            <div className="absolute  cursor-pointer inset-y-0 start-0 flex items-center ps-3">
+            <div onClick={searchdata} className="absolute  cursor-pointer inset-y-0 start-0 flex items-center ps-3">
               <svg
                 className="w-4 h-4 text-gray-500 dark:text-gray-400"
                 aria-hidden="true"
@@ -117,6 +130,7 @@ export const Navbar = () => {
               <span className="sr-only">Search icon</span>
             </div>
             <input
+             onKeyUp={handleSearch}
               type="text"
               id="search-navbar"
               className="block w-full p-2 ps-10 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1 disabled:shadow-none"

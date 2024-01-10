@@ -5,13 +5,13 @@ import BestSeller from "../Stocks/BestSeller";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import TopBrands from "../Stocks/TopBrands";
+import { Brands } from "../Stocks/Brands";
 
 export const Midbar = () => {
   const [randomProducts, setRandomProducts] = useState([]);
   const [ratings, setRatings] = useState([]);
   const [traind, setTraind] = useState([]);
   const [bestSeller, setBestseller] = useState([]);
-  const [brand, setBrand] = useState([]);
 
   useEffect(() => {
     const allData = async () => {
@@ -68,8 +68,7 @@ export const Midbar = () => {
       combineWithId(watchProducts, watchProductsSnapshot);
       combineWithId(tabProducts, tabProductsSnapshot);
       combineWithId(bluetoothProducts, bluetoothProductsSnapshot);
-    
-      
+     
       // Shuffle the array
       const shuffledProducts = shuffleArray(productsWithId);
     
@@ -83,7 +82,6 @@ export const Midbar = () => {
     
       // bestseller
       setBestseller(shuffledProducts.slice(10, 13));
-     console.log(shuffledProducts);
       // Sort the products based on the 'rating' property
       const sortedProducts = [...productsWithId].sort((a, b) => {
         const ratingA = a.rating || 0; // Use 0 if 'rating' is undefined or null
