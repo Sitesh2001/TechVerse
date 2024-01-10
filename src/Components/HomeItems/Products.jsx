@@ -4,7 +4,7 @@ import Banner from './Banner'
 import { SubNav } from '../Navbar/SubNav'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase'
-import ProductItems from './ProductItems'
+import ProductItems from '../Gadgets/ProductItems'
 
 const Products = (prop) => {
     const mobile = '/Images/mbanner1.jpg'

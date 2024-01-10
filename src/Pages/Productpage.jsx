@@ -72,6 +72,7 @@ const Productpage = () => {
         });
         setLoading(false);
 
+        console.log("Product added to cart successfully");
       } catch (error) {
         setLoading(false);
         console.error("Error adding product to cart:", error);

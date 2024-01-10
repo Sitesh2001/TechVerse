@@ -5,9 +5,7 @@ import Mymodal from "../modal/Mymodal";
 import { FaUserCircle } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { BsHandbag, BsQuestionCircle } from "react-icons/bs";
-import { auth, db } from "../../firebase";
-import { cache } from "@babel/traverse";
-import { collection, getDocs } from "@firebase/firestore";
+import { auth } from "../../firebase";
 
 export const Navbar = () => {
   const [value, setValue] = useState(0);
@@ -22,32 +20,8 @@ export const Navbar = () => {
   const { islogged, CurrentUser, productsWithId } = context;
 
   useEffect(() => {
-      const cartdata = async() =>{
-        if (islogged) {
-          try {
-            const subCollectionRef = collection(db, `cart/${CurrentUser[0].uid}/UserItems`);
-            const querySnapshot = await getDocs(subCollectionRef);
-  
-            const productDetailsArray = [];
-  
-            for (const dataDoc of querySnapshot.docs) {
-  
-              const item = dataDoc.data();
-              console.log(item.quantity);
-            }
-          }catch(err){
-            console.log(err);
-          }
-        }
-      }
-      cartdata()
-    },[])
-
-
-  useEffect(() => {
     if (islogged) {
       setUserName(CurrentUser[0].username)
-      setValue(CurrentUser[0].cart)
     }
   }, [CurrentUser]);
 
@@ -178,7 +152,7 @@ export const Navbar = () => {
               {islogged?'':''}
               <button
                 onClick={!islogged?toggleUser:userPage}
-                className="block text-[1.7rem] text-blue-600 bg-transparent hover:scale-125 duration-500 transition-all"
+                className="block text-[1.7rem] text-blue-600 bg-transparent hover:scale-125 transition-all"
               >
                 <FaUserCircle id="user" />
               </button>
@@ -190,11 +164,13 @@ export const Navbar = () => {
                     } `}
                   >
                     <Link to="/register">
+                      {" "}
                       <button className="text-sm text-slate-600 hover:text-blue-600 relative">
                         New <sup className="text-sm absolute top-[-4px]">+</sup>
-                      </button>
+                      </button>{" "}
                     </Link>
                     <Link to="/login">
+                      {" "}
                       <button className="text-sm text-slate-600 hover:text-blue-600">
                         User
                       </button>
