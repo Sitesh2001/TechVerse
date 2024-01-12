@@ -37,7 +37,7 @@ const Productpage = () => {
         });
     };
     getProducts();
-  }, [type]);
+  }, [type,id]);
 
   const rate = Number(product.rating);
 

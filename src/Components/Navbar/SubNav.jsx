@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export const SubNav = () => {
   return (
-    <div className=' w-full relative flex justify-center'>
+    <div className='hidden w-full relative md:flex justify-center'>
       <div className='flex absolute top-0 z-10 justify-center self-center w-fit mt-2'>
         <ul className='flex justify-center items-center gap-10 rounded-full min-h-14 flex-wrap bg-white shadow-NavShadow px-10 '>
             <li className='text-center text-[15px] font-medium hover:text-blue-800 text-ellipsis whitespace-nowrap transition-all cursor-pointer'> <Link to='/mobiles' >Mobiles</Link> </li>

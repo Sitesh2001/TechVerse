@@ -13,7 +13,10 @@ module.exports = {
       },
       fontFamily: {
         'salar': 'sans-serif'
-      }
+      }, 
+      screens: {
+        'vsm': {'max':'650px'},
+      },
     },
   },
   plugins: [],

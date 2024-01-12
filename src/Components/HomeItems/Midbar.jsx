@@ -5,7 +5,6 @@ import BestSeller from "../Stocks/BestSeller";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import TopBrands from "../Stocks/TopBrands";
-import { Brands } from "../Stocks/Brands";
 
 export const Midbar = () => {
   const [randomProducts, setRandomProducts] = useState([]);
@@ -108,14 +107,14 @@ export const Midbar = () => {
   };
 
   return (
-    <div className="w-[95%] m-auto mt-10">
-      <div className="flex gap-x-5">
-        <div className=" hidden md:block">
+    <div className=" w-full md:w-[95%] mx-auto mt-10">
+      <div className="flex gap-x-4 ">
+        <div className=" hidden md:block h-fit sticky top-8">
           <Categories />
           <BestSeller filterData = {bestSeller} />
         </div>
-        <div>
-          <div className="flex gap-x-5 ">
+        <div className=" max-w-full overflow-y-auto">
+          <div className="flex gap-x-4 mx-2 flex-wrap ">
           <NewProducts filterData={randomProducts} name="New Arrival" />
           <NewProducts filterData={traind} name="Trainding" />
           <NewProducts filterData={ratings} name="High Rating" />

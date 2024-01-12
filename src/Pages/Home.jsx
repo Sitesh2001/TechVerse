@@ -11,7 +11,6 @@ export default function Home() {
   const tv = "/Images/Moniter.jpg";
   const watch = "/Images/watch.jpg";
   const BannerImage = [mobile, laptop, tablet, tv, watch];
-   // context data
 
   return (
     <Layout>

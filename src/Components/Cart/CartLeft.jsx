@@ -1,6 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
+import myContext from "../../context/Data/myContext";
+
 
 const CartBox = (prop) => {
+   // context data
+   const context = useContext(myContext);
+   const { islogged, CurrentUser } = context;
 
  const removeItem = () =>{
   prop.onDelete(prop.itemId)

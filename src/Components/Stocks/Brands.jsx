@@ -20,14 +20,12 @@ export const Brands = () => {
     if (urldata !== null) {
       const filterBrand = productsWithId.filter((ele) => ele.brand === urldata);
       setSearchResults(filterBrand);
-      console.log('urldata not null'+ urldata,searchdata);
     }
     else{
         const filteredProducts = productsWithId.filter((product) =>
         product.productname.toLowerCase().includes(searchdata.toLowerCase())
       );
       setSearchResults(filteredProducts);
-      console.log(searchdata,urldata);
     }
 
   }, [urldata, searchdata, productsWithId]);

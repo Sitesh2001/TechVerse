@@ -2,7 +2,7 @@ import React from "react";
 import { BsBagPlus, BsHeart } from "react-icons/bs";
 import { IoMdStar } from "react-icons/io";
 import { Link } from "react-router-dom";
-import ScrollToTop from "../HomeItems/ScrollToTop";
+import ScrollToTop from "./ScrollToTop";
 
 const ProductItems = (prop) => {
   const rate = Number(prop.items.rating);
