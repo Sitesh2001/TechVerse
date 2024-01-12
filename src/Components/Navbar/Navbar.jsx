@@ -6,13 +6,15 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { BsHandbag, BsQuestionCircle } from "react-icons/bs";
 import { auth } from "../../firebase";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
-  
+
   const [user, setUser] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const cartQuantity = useSelector((state) => state.cart.quantity)
 
   // context data
   const context = useContext(myContext);
@@ -121,9 +123,8 @@ export const Navbar = () => {
               </button>
               {!islogged && (
                 <div
-                  className={`flex text-center items-center transition-all duration-500 scale-x-0 w-0 ${
-                    user ? "scale-x-[1] w-20 " : null
-                  } `}
+                  className={`flex text-center items-center transition-all duration-500 scale-x-0 w-0 ${user ? "scale-x-[1] w-20 " : null
+                    } `}
                 >
                   <Link className="flex-1 user p-1 px-2" to="/register">
                     <button className="text-sm text-slate-600 hover:text-blue-600 relative">
@@ -150,13 +151,12 @@ export const Navbar = () => {
             <li className="mx-4 ">
               <button
                 onClick={isCart}
-                className={` ${
-                  cartValue > 0 ? " text-blue-600" : " text-slate-600"
-                } block relative p-1 text-center text-[1.7rem] bg-transparent hover:scale-125 transition-all`}
+                className={` ${cartValue > 0 ? " text-blue-600" : " text-slate-600"
+                  } block relative p-1 text-center text-[1.7rem] bg-transparent hover:scale-125 transition-all`}
               >
                 <BsHandbag />
                 <span className="absolute normal-nums font-salar font-medium top-[12px] right-[22px] h-0 w-0 text-sm ">
-                  {cartValue}
+                  {cartQuantity}
                 </span>
               </button>
             </li>

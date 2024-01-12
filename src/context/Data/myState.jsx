@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import MyContext from "./myContext";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "../../firebase";
+import { useDispatch } from "react-redux";
+import { setQuantity } from "../../redux/cartRedux";
 
 function MyState(props) {
   const [islogged, setIslogged] = useState(null);
   const [productsWithId, setProductsWithId] = useState([]);
   const [cartValue, setCartValue] = useState(0)
 
+  const dispatch = useDispatch()
   useEffect(() => {
     const fetchData = async () => {
       const mobileProductsSnapshot = await getDocs(
@@ -107,7 +110,7 @@ function MyState(props) {
 
           const querySnapshot = await getDocs(subCollectionRef);
 
-          setCartValue(querySnapshot.size);
+          dispatch(setQuantity(querySnapshot.size))
         } catch (error) {
           console.error(error);
           // Handle the error if needed
