@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 export default function Cart() {
   const [productDetails, setProductDetails] = useState([]);
-
+  
 
   // context data
   const context = useContext(myContext);

@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useSelector } from 'react-redux';
 const CartRight = (prop) => {
 
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-   
+    const productIds = useSelector((state) => state.cart.productsId)
     function createOrder(data, actions) {
         return actions.order
             .create({
@@ -19,15 +22,34 @@ const CartRight = (prop) => {
     }
     function onApprove(data, actions) {
         return actions.order.capture().then(async function (details) {
-            console.log("Paid")
+           await createOrderInDb()
+           console.log("Success")
         });
     }
     function onError(err) {
         console.log(err);
     }
+    const createOrderInDb = async () => {
+        try {
+            const cartRef = doc(collection(db, "order"));
+            await setDoc(cartRef, {
+                products: productIds,
+                totalAmount: prop.tprice,
+                paymentMethod: "Paypal",
+                paymentStatus: "Paid",
+                deliveryStatus: "Pending",
+                orderDate: Date.now()
+            });
+
+            console.log("Order Created Successfully")
+        } catch (error) {
+
+            console.error(error);
+        }
+    }
     useEffect(() => {
         const loadPaypalScript = async () => {
-            const  clientId = "AWEQ_pGjiz4KS4RgXv7oT5DdcpZZ9yX5hqvynGVUGkPEixlM7FHqCx1pCMp0Sy7ZZ1-QypnsI8JdnHFo"
+            const clientId = "AWEQ_pGjiz4KS4RgXv7oT5DdcpZZ9yX5hqvynGVUGkPEixlM7FHqCx1pCMp0Sy7ZZ1-QypnsI8JdnHFo"
             paypalDispatch({
                 type: "resetOptions",
                 value: { clientId: clientId, currency: "USD" },
