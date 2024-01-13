@@ -10,6 +10,9 @@ import myContext from "../context/Data/myContext";
 import Mymodal from "../Components/modal/Mymodal";
 import { Bars} from "react-loader-spinner";
 import { Toaster, toast } from "react-hot-toast";
+import { Bars } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
+import { increaseQuantity } from "../redux/cartRedux";
 
 const Productpage = () => {
   const { type, id } = useParams();
@@ -19,6 +22,8 @@ const Productpage = () => {
   // context data
   const context = useContext(myContext);
   const { islogged, CurrentUser } = context;
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getProducts = async () => {
@@ -38,7 +43,7 @@ const Productpage = () => {
         });
     };
     getProducts();
-  }, [type,id]);
+  }, [type, id]);
 
   const rate = Number(product.rating);
 
@@ -71,6 +76,7 @@ const Productpage = () => {
           category: product.category,
           quantity: 1,
         });
+        dispatch(increaseQuantity())
         setLoading(false);
 
         toast.success("Product added to cart successfully")
@@ -140,18 +146,18 @@ const Productpage = () => {
               <div className=" text-lg font-medium tracking-wide ">
                 Rs {product.price}
               </div>
-              <div className="flex flex-wrap justify-between ">   
+              <div className="flex flex-wrap justify-between ">
                 <div>
                   <p className="w-full text-slate-700"> {product.desc} </p>
                 </div>
               </div>
               <p className="text-slate-700">{product.warranty}</p>
               <div className="text-xl flex items-center">
-              <p className=" text-lg font-normal tracking-wide  mr-4"><span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800">
-            {product?.rating}
-          </span> </p>
-                 {renderRating()} </div>
-                 
+                <p className=" text-lg font-normal tracking-wide  mr-4"><span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded dark:bg-blue-200 dark:text-blue-800">
+                  {product?.rating}
+                </span> </p>
+                {renderRating()} </div>
+
               <div className="flex gap-x-3 ">
                 <button
                   onClick={addtoCart}

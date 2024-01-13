@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SideIcon } from "./SideIcon";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Toaster, toast } from "react-hot-toast";
+import myContext from "../../context/Data/myContext";
 
 export const Log = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,10 @@ export const Log = () => {
   const auth = getAuth();
   const navigate = useNavigate();
 
+  const context = useContext(myContext);
+  const { CurrentUser } = context;
+  localStorage.setItem("userId", CurrentUser[0].id)
+
   const Login = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, pass)
@@ -18,6 +23,7 @@ export const Log = () => {
         setEmail("");
         setPass("");
         setErrMsg("");
+
         toast.success("Logged In Successful!");
         setTimeout(() => {
           navigate("/");
