@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import MyContext from "./myContext";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "../../firebase";
+import { useDispatch } from "react-redux";
+import { setQuantity } from "../../redux/cartRedux";
 
 function MyState(props) {
   const [islogged, setIslogged] = useState(null);
   const [productsWithId, setProductsWithId] = useState([]);
-
+  const dispatch = useDispatch()
   useEffect(() => {
     const fetchData = async () => {
       const mobileProductsSnapshot = await getDocs(
@@ -94,6 +96,35 @@ function MyState(props) {
   };
 
   const CurrentUser = GetUser();
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+
+      if (islogged && CurrentUser) {
+        try {
+          const subCollectionRef = collection(
+            db,
+            `cart/${CurrentUser[0].uid}/UserItems`
+          );
+
+          const querySnapshot = await getDocs(subCollectionRef);
+          const productId = []
+          querySnapshot.docs.forEach((data) => {
+            productId.push(data.data().productid)
+          })
+          dispatch(setQuantity({ quantity: querySnapshot.size, id: productId }))
+
+        } catch (error) {
+          console.error(error);
+          // Handle the error if needed
+        }
+      } else {
+
+      }
+    };
+
+    fetchCartData();
+  }, [islogged, CurrentUser, dispatch]);
 
   return (
     <MyContext.Provider value={{ islogged, CurrentUser, productsWithId }}>

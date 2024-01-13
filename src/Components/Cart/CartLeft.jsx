@@ -10,7 +10,8 @@ const CartBox = (prop) => {
   const dispatch = useDispatch();
   const removeItem = () => {
     prop.onDelete(prop.itemId);
-    dispatch(decreseQuantity());
+    console.log(prop)
+    dispatch(decreseQuantity(prop.productid));
   };
 
   return (
@@ -31,7 +32,7 @@ const CartBox = (prop) => {
           <p className="text-slate-500">Qty</p>
           <div className="relative">
             <select
-             
+
               name="value"
               id="val"
               className="text-sm w-14 shadow-sm text-slate-700 font-medium text-left py-1 px-2 appearance-none border border-slate-300 rounded-md focus:outline-none focus:border-blue-500"
@@ -52,18 +53,18 @@ const CartBox = (prop) => {
                 <path fillRule="evenodd" d="M6 8l4 4 4-4" />
               </svg>
             </div>
-          </div>       
+          </div>
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-between text-right">
-            <div className="text-lg font-[500]">Rs.{prop.price}</div>
-            <p
-              onClick={removeItem}
-              className="text-gray-500 cursor-pointer hover:text-blue-500"
-            >
-              Remove
-            </p>
-          </div>
+        <div className="text-lg font-[500]">Rs.{prop.price}</div>
+        <p
+          onClick={removeItem}
+          className="text-gray-500 cursor-pointer hover:text-blue-500"
+        >
+          Remove
+        </p>
+      </div>
     </div>
   );
 };

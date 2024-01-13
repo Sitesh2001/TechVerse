@@ -4,22 +4,28 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     quantity: 0,
-
+    productsId: [],
     loading: false,
     error: null,
   },
   reducers: {
-    increaseQuantity: (state) => {
+    increaseQuantity: (state, action) => {
       state.quantity += 1;
+      state.productsId.push(action.payload);
     },
-    decreseQuantity: (state) => {
+    decreseQuantity: (state, action) => {
       state.quantity -= 1;
+      state.productsId = state.productsId.filter((data) => {
+        return action.payload !== data;
+      });
     },
     setQuantity: (state, action) => {
-      state.quantity = action.payload;
+      state.quantity = action.payload.quantity;
+      state.productsId = action.payload.id;
     },
   },
 });
 
-export const { increaseQuantity, decreseQuantity,setQuantity } = cartSlice.actions;
+export const { increaseQuantity, decreseQuantity, setQuantity } =
+  cartSlice.actions;
 export default cartSlice.reducer;

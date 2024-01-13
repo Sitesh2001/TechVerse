@@ -8,9 +8,9 @@ import { db } from "../firebase";
 import { useParams } from "react-router-dom";
 import myContext from "../context/Data/myContext";
 import Mymodal from "../Components/modal/Mymodal";
-import { Bars} from "react-loader-spinner";
+import { Bars } from "react-loader-spinner";
 import { Toaster, toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { increaseQuantity } from "../redux/cartRedux";
 
 const Productpage = () => {
@@ -21,6 +21,11 @@ const Productpage = () => {
   // context data
   const context = useContext(myContext);
   const { islogged, CurrentUser } = context;
+
+  const isProductPresentInCart = useSelector((state) => {
+    return state.cart?.productsId?.includes(id);
+  });
+  console.log(isProductPresentInCart)
 
   const dispatch = useDispatch()
 
@@ -58,6 +63,7 @@ const Productpage = () => {
     return ratingElements;
   };
 
+
   const addtoCart = async () => {
     if (islogged) {
       setLoading(true);
@@ -75,14 +81,14 @@ const Productpage = () => {
           category: product.category,
           quantity: 1,
         });
-        dispatch(increaseQuantity())
+        dispatch(increaseQuantity(product.id))
         setLoading(false);
 
         toast.success("Product added to cart successfully",)
       } catch (error) {
         setLoading(false);
         toast.error("Error adding product to cart")
-        console.error( error);
+        console.error(error);
       }
     } else {
       openModal();
@@ -105,6 +111,7 @@ const Productpage = () => {
     setIsModalOpen(false);
   };
 
+
   useEffect(() => {
     // Scroll to the top when the component mounts
     window.scrollTo(0, 0);
@@ -115,7 +122,7 @@ const Productpage = () => {
       <SubNav />
       {product ? (
         <div className="pt-9 mt-10">
-          <Toaster position="top-center" reverseOrder= {true} />
+          <Toaster position="top-center" reverseOrder={true} />
           <Mymodal isOpen={isModalOpen} onClose={closeModal}>
             {/* Content for your modal */}
             <div>
@@ -175,8 +182,8 @@ const Productpage = () => {
                     />
                   ) : (
                     <>
-                      <FaCartPlus className="mr-1 h-4 w-4" />
-                      Add to cart
+                      {isProductPresentInCart ? ("Go TO Cart") : (<><FaCartPlus className="mr-1 h-4 w-4" />
+                        Add to cart</>)}
                     </>
                   )}
                 </button>

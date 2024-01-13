@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 export default function Cart() {
   const [productDetails, setProductDetails] = useState([]);
 
+
   // context data
   const context = useContext(myContext);
   const { islogged, CurrentUser } = context;
@@ -59,8 +60,10 @@ export default function Cart() {
             );
             if (productQuery.exists()) {
               const productData = productQuery.data();
+
               productDetailsArray.push({
                 ...productData,
+                productId: item.productid,
                 itemId: dataDoc.id, // Add itemId property with dataDoc.id
               });
             }
@@ -98,6 +101,7 @@ export default function Cart() {
             <>
               <div className="flex-[2] min-w-[400px] ">
                 {productDetails.map((data) => {
+                  console.log(data)
                   return (
                     <CartLeft
                       key={data.itemId} // Assuming itemId is unique and can be used as a key
@@ -105,6 +109,7 @@ export default function Cart() {
                       img={data.image}
                       price={data.price}
                       itemId={data.itemId}
+                      productid={data.productId}
                       onDelete={handleDeleteItem}
                     />
                   );
@@ -115,10 +120,10 @@ export default function Cart() {
           ) : (
             <>
               <div className=" w-[90%] h-[60vh] flex-col shadow flex justify-center items-center mx-auto">
-               
+
                 <img src="/Images/cart.webp" alt="cartimage" className=" w-48 " />
                 <h1 className=" text-lg font-semibold mt-3 ">
-                Missing Cart items?
+                  Missing Cart items?
                 </h1>
                 <p className="text-sm font-medium text-slate-600 pt-1 pb-3">Add the items to buy the products. </p>
 
