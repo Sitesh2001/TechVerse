@@ -7,7 +7,7 @@ export default function Order() {
       <main className='flex w-[95%] gap-x-5 mx-auto mt-6 '>
         <div className='flex-[3] relative flex flex-col gap-y-6 '>
         <h1 className=' absolute -top-7 text-lg font-semibold '><span className='text-slate-600'>OrderId</span> #12345</h1>
-          <div style={{boxShadow: "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px"}} className='h-60 flex flex-col rounded overflow-y-auto '>
+          <div style={{boxShadow: "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px"}} className='h-60 flex flex-col rounded overflow-y-auto orderScroll '>
           <div className='flex-1 flex p-4'>
             <div className=' basis-28'>
               <img src="/Images/cart.webp" className='w-full h-full object-contain' alt="images" />
