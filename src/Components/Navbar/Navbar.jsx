@@ -23,7 +23,7 @@ export const Navbar = () => {
 
   // context data
   const context = useContext(myContext);
-  const { islogged, cartValue } = context;
+  const { islogged } = context;
 
 
   useEffect(() => {
@@ -170,7 +170,7 @@ export const Navbar = () => {
 
               <button
                 onClick={isCart}
-                className={` ${cartValue > 0 ? " text-blue-600" : " text-slate-600"
+                className={` ${cartQuantity > 0 ? " text-blue-600" : " text-slate-600"
                   } block relative p-1 text-center text-[1.7rem] bg-transparent hover:scale-125 transition-all ${highlighted ? "highlight" : ""
                   }`}>
                 <BsHandbag />

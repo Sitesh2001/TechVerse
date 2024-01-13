@@ -52,8 +52,10 @@ const CartBox = (prop) => {
                 <path fillRule="evenodd" d="M6 8l4 4 4-4" />
               </svg>
             </div>
-          </div>
-          <div className="flex-1 flex flex-col justify-between text-right">
+          </div>       
+        </div>
+      </div>
+      <div className="flex-1 flex flex-col justify-between text-right">
             <div className="text-lg font-[500]">Rs.{prop.price}</div>
             <p
               onClick={removeItem}
@@ -62,8 +64,6 @@ const CartBox = (prop) => {
               Remove
             </p>
           </div>
-        </div>
-      </div>
     </div>
   );
 };
