@@ -78,7 +78,7 @@ const Productpage = () => {
         dispatch(increaseQuantity())
         setLoading(false);
 
-        toast.success("Product added to cart successfully")
+        toast.success("Product added to cart successfully",)
       } catch (error) {
         setLoading(false);
         toast.error("Error adding product to cart")
@@ -115,7 +115,7 @@ const Productpage = () => {
       <SubNav />
       {product ? (
         <div className="pt-9 mt-10">
-          <Toaster position="top-right" reverseOrder= {true} />
+          <Toaster position="top-center" reverseOrder= {true} />
           <Mymodal isOpen={isModalOpen} onClose={closeModal}>
             {/* Content for your modal */}
             <div>
