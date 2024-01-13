@@ -53,7 +53,7 @@ const Register = () => {
             }, 500);
           })
           .catch((error) => {
-            toast.error("This didn't work.")
+            toast.error("Something is wrong")
             setErrMsg(error.message);
           });
       })

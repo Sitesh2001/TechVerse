@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import myContext from "../context/Data/myContext";
 import Mymodal from "../Components/modal/Mymodal";
 import { Bars} from "react-loader-spinner";
+import { Toaster, toast } from "react-hot-toast";
 
 const Productpage = () => {
   const { type, id } = useParams();
@@ -72,10 +73,11 @@ const Productpage = () => {
         });
         setLoading(false);
 
-        console.log("Product added to cart successfully");
+        toast.success("Product added to cart successfully")
       } catch (error) {
         setLoading(false);
-        console.error("Error adding product to cart:", error);
+        toast.error("Error adding product to cart")
+        console.error( error);
       }
     } else {
       openModal();
@@ -108,6 +110,7 @@ const Productpage = () => {
       <SubNav />
       {product ? (
         <div className="pt-9 mt-10">
+          <Toaster position="top-right" reverseOrder= {true} />
           <Mymodal isOpen={isModalOpen} onClose={closeModal}>
             {/* Content for your modal */}
             <div>

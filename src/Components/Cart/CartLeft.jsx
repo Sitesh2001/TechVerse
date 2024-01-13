@@ -1,11 +1,36 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import myContext from "../../context/Data/myContext";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 
 const CartBox = (prop) => {
    // context data
    const context = useContext(myContext);
    const { islogged, CurrentUser } = context;
+   const [selectedQuantity, setSelectedQuantity] = useState(prop.quantity);
+
+   const handleQuantityChange = async (event) => {
+    const newQuantity = parseInt(event.target.value);
+
+    // Update the local state
+    setSelectedQuantity(newQuantity);
+
+    if (islogged && CurrentUser) {
+      try {
+        // Update the Firestore document
+        const cartItemDocRef = doc(
+          db,
+          `cart/${CurrentUser[0].uid}/UserItems`,
+          prop.itemId
+        );
+        await updateDoc(cartItemDocRef, { quantity: newQuantity });
+      } catch (error) {
+        console.error("Error updating quantity:", error);
+      }
+    }
+  };
+
 
  const removeItem = () =>{
   prop.onDelete(prop.itemId)
@@ -29,6 +54,8 @@ const CartBox = (prop) => {
       <p className="text-slate-500">Qty</p>
       <div className="relative">
         <select
+          value={selectedQuantity}
+          onChange={handleQuantityChange}
           name="value"
           id="val"
           className="text-sm w-14 shadow-sm text-slate-700 font-medium text-left py-1 px-2 appearance-none border border-slate-300 rounded-md focus:outline-none focus:border-blue-500"
