@@ -10,7 +10,6 @@ import myContext from "../context/Data/myContext";
 import Mymodal from "../Components/modal/Mymodal";
 import { Bars} from "react-loader-spinner";
 import { Toaster, toast } from "react-hot-toast";
-import { Bars } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { increaseQuantity } from "../redux/cartRedux";
 

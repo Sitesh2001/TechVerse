@@ -31,8 +31,7 @@ const CartBox = (prop) => {
           <p className="text-slate-500">Qty</p>
           <div className="relative">
             <select
-              value={selectedQuantity}
-              onChange={handleQuantityChange}
+             
               name="value"
               id="val"
               className="text-sm w-14 shadow-sm text-slate-700 font-medium text-left py-1 px-2 appearance-none border border-slate-300 rounded-md focus:outline-none focus:border-blue-500"
