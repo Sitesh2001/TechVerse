@@ -10,6 +10,15 @@ const CartBox = (prop) => {
     dispatch(decreseQuantity(prop.productid));
   };
 
+  const changeQuantity = (e) => {
+    const updatedProductDetails = [...prop.productDetails];
+    updatedProductDetails[prop.index] = {
+      ...updatedProductDetails[prop.index],
+      quantity: e.target.value,
+    };
+
+    prop.setProductDetails(updatedProductDetails);
+  }
   return (
     <div className="border-b h-[163px] border-slate-300 py-4 pr-3 flex gap-4 m-5">
       <div className="basis-[170px] h-[130px] rounded">
@@ -28,9 +37,9 @@ const CartBox = (prop) => {
           <p className="text-slate-500">Qty</p>
           <div className="relative">
             <select
-
               name="value"
               id="val"
+              onChange={changeQuantity}
               className="text-sm w-14 shadow-sm text-slate-700 font-medium text-left py-1 px-2 appearance-none border border-slate-300 rounded-md focus:outline-none focus:border-blue-500"
             >
               <option value="1">1</option>

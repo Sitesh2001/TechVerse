@@ -46,16 +46,16 @@ export default function Cart() {
 
   const DeleteAllItem = async () => {
     try {
-       // Delete the entire 'UserItems' collection for the user
-    const collectionRef = collection(db, `cart/${CurrentUser[0].uid}/UserItems`);
-    const querySnapshot = await getDocs(collectionRef);
+      // Delete the entire 'UserItems' collection for the user
+      const collectionRef = collection(db, `cart/${CurrentUser[0].uid}/UserItems`);
+      const querySnapshot = await getDocs(collectionRef);
 
-    querySnapshot.forEach((doc) => {
-      deleteDoc(doc.ref);
-    });
+      querySnapshot.forEach((doc) => {
+        deleteDoc(doc.ref);
+      });
 
-    dispatch(clearCart());
-    toast.success("Items Deleted Successfully");
+      dispatch(clearCart());
+      toast.success("Items Deleted Successfully");
 
       // You may choose to update the local state if necessary
       setProductDetails([]);
@@ -79,6 +79,7 @@ export default function Cart() {
 
           for (const dataDoc of querySnapshot.docs) {
             const item = dataDoc.data();
+
             const productCollectionRef = collection(
               db,
               `products-${item.category.toUpperCase()}`
@@ -93,11 +94,12 @@ export default function Cart() {
                 ...productData,
                 productId: item.productid,
                 itemId: dataDoc.id, // Add itemId property with dataDoc.id
+                quantity: item.quantity
               });
             }
           }
-
           setProductDetails(productDetailsArray);
+
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -108,14 +110,14 @@ export default function Cart() {
   }, [islogged, CurrentUser]);
 
   const totalPrice = productDetails.reduce(
-    (sum, item) => sum + Number(item.price),
+    (sum, item) => sum + Number(item.price) * Number(item.quantity),
     0
   );
-
+  console.log(productDetails)
   return (
     <Layout>
       <div className=" mt-10 ">
-        <ScrollToTop/>
+        <ScrollToTop />
         <Toaster position="top-center" reverseOrder={true} />
         <div
           style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 0px 0px 1px" }}
@@ -132,7 +134,7 @@ export default function Cart() {
           {productDetails.length > 0 ? (
             <>
               <div className="flex-[2] min-w-[400px] ">
-                {productDetails.map((data) => {
+                {productDetails.map((data, index) => {
                   return (
                     <CartLeft
                       key={data.itemId} // Assuming itemId is unique and can be used as a key
@@ -142,6 +144,9 @@ export default function Cart() {
                       itemId={data.itemId}
                       productid={data.productId}
                       onDelete={handleDeleteItem}
+                      setProductDetails={setProductDetails}
+                      productDetails={productDetails}
+                      index={index}
                     />
                   );
                 })}
