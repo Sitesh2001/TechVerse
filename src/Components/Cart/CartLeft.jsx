@@ -1,16 +1,12 @@
-import React, { useContext } from "react";
-import myContext from "../../context/Data/myContext";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { decreseQuantity } from "../../redux/cartRedux";
 
 const CartBox = (prop) => {
   // context data
-  const context = useContext(myContext);
-  const { islogged, CurrentUser } = context;
   const dispatch = useDispatch();
   const removeItem = () => {
     prop.onDelete(prop.itemId);
-    console.log(prop)
     dispatch(decreseQuantity(prop.productid));
   };
 

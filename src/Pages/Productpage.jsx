@@ -5,13 +5,14 @@ import { FaCartPlus } from "react-icons/fa6";
 import { IoMdStar } from "react-icons/io";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import myContext from "../context/Data/myContext";
 import Mymodal from "../Components/modal/Mymodal";
 import { Bars } from "react-loader-spinner";
 import { Toaster, toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseQuantity } from "../redux/cartRedux";
+import ScrollToTop from "../Components/HomeItems/ScrollToTop";
 
 const Productpage = () => {
   const { type, id } = useParams();
@@ -22,10 +23,11 @@ const Productpage = () => {
   const context = useContext(myContext);
   const { islogged, CurrentUser } = context;
 
+  const Navigate = useNavigate();
+
   const isProductPresentInCart = useSelector((state) => {
     return state.cart?.productsId?.includes(id);
   });
-  console.log(isProductPresentInCart)
 
   const dispatch = useDispatch()
 
@@ -95,6 +97,10 @@ const Productpage = () => {
     }
   };
 
+  const goToCart = () =>{
+    Navigate(`/cart/products`)
+  }
+
   const buy = () => {
     if (islogged) {
       console.log("buy now");
@@ -111,17 +117,12 @@ const Productpage = () => {
     setIsModalOpen(false);
   };
 
-
-  useEffect(() => {
-    // Scroll to the top when the component mounts
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <Layout>
       <SubNav />
       {product ? (
         <div className="pt-9 mt-10">
+          <ScrollToTop/>
           <Toaster position="top-center" reverseOrder={true} />
           <Mymodal isOpen={isModalOpen} onClose={closeModal}>
             {/* Content for your modal */}
@@ -150,7 +151,7 @@ const Productpage = () => {
                 {product.productname}
               </div>
               <div className=" text-lg font-medium tracking-wide ">
-                Rs {product.price}
+                Rs. {product.price}
               </div>
               <div className="flex flex-wrap justify-between ">
                 <div>
@@ -166,9 +167,9 @@ const Productpage = () => {
 
               <div className="flex gap-x-3 ">
                 <button
-                  onClick={addtoCart}
+                  onClick={isProductPresentInCart ?goToCart:addtoCart}
                   type="button"
-                  className="flex items-center rounded h-10 w-[150px] justify-center bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-semibold uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-blue-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] "
+                  className=" items-center rounded h-10 w-[150px] justify-center bg-blue-600 px-4 pb-2 pt-2.5 text-xs font-semibold uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-blue-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] relative inline-flex overflow-hidden border border-blue-500 group "
                 >
                   {loading ? (
                     <Bars
@@ -182,7 +183,28 @@ const Productpage = () => {
                     />
                   ) : (
                     <>
-                      {isProductPresentInCart ? ("Go TO Cart") : (<><FaCartPlus className="mr-1 h-4 w-4" />
+                      {isProductPresentInCart ? <>
+                        <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full group-hover:translate-x-0 ease">
+                    <svg
+                      className="w-6 h-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span className="absolute flex items-center justify-center w-full h-full transition-all duration-300 transform group-hover:translate-x-full ease">
+                    Go to Cart
+                  </span>
+                  <span className="relative invisible">Back to Home</span>
+                      </> : (<><FaCartPlus className="mr-1 h-4 w-4" />
                         Add to cart</>)}
                     </>
                   )}

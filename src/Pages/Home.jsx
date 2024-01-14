@@ -3,6 +3,7 @@ import { Layout } from "../Components/Layout/Layout";
 import { SubNav } from "../Components/Navbar/SubNav";
 import Banner from "../Components/HomeItems/Banner";
 import { Midbar } from "../Components/HomeItems/Midbar";
+import ScrollToTop from "../Components/HomeItems/ScrollToTop";
 
 export default function Home() {
   const mobile = "/Images/mobile.jpg";
@@ -14,6 +15,7 @@ export default function Home() {
 
   return (
     <Layout>
+      <ScrollToTop/>
       <SubNav />
       <Banner images={BannerImage} />
       <Midbar />

@@ -32,7 +32,7 @@ const BestSeller = (prop) => {
                 renderRating(Number(data.rating))
                }
           </div>
-          <p> {data.price} </p></div>
+          <p>Rs. {data.price} </p></div>
         </Link>
         })
       }     

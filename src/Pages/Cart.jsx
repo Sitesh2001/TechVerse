@@ -12,10 +12,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";
+import { Toaster, toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../redux/cartRedux";
+import ScrollToTop from "../Components/HomeItems/ScrollToTop";
 
 export default function Cart() {
   const [productDetails, setProductDetails] = useState([]);
-  
+
+  const dispatch = useDispatch();
 
   // context data
   const context = useContext(myContext);
@@ -25,14 +30,37 @@ export default function Cart() {
     try {
       const itemRef = doc(db, `cart/${CurrentUser[0].uid}/UserItems`, itemId);
       await deleteDoc(itemRef);
-      console.log("Item deleted successfully:", itemId);
+      toast.success("Item Deleted Successfully");
       setProductDetails(
         productDetails.filter((item) => item.itemId !== itemId)
       );
-
       // Fetch the updated items after deletion (if required)
       // Refetch the items or update the state after deletion
     } catch (error) {
+      toast.error("Something went Wrong");
+      console.error("Error deleting item:", error);
+    }
+  };
+
+  // delete all the cart items
+
+  const DeleteAllItem = async () => {
+    try {
+       // Delete the entire 'UserItems' collection for the user
+    const collectionRef = collection(db, `cart/${CurrentUser[0].uid}/UserItems`);
+    const querySnapshot = await getDocs(collectionRef);
+
+    querySnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+
+    dispatch(clearCart());
+    toast.success("Items Deleted Successfully");
+
+      // You may choose to update the local state if necessary
+      setProductDetails([]);
+    } catch (error) {
+      toast.error("Something went Wrong");
       console.error("Error deleting item:", error);
     }
   };
@@ -87,12 +115,16 @@ export default function Cart() {
   return (
     <Layout>
       <div className=" mt-10 ">
+        <ScrollToTop/>
+        <Toaster position="top-center" reverseOrder={true} />
         <div
           style={{ boxShadow: "rgba(0, 0, 0, 0.05) 0px 0px 0px 1px" }}
           className="w-[90%] m-auto text-center min-h-16 py-5 rounded"
         >
           {" "}
-          <span className="text-lg font-medium text-blue-500 px-2 border-b border-blue-500">
+          <span
+            className="text-lg font-medium cursor-pointer text-blue-500 px-2 border-b border-blue-500"
+          >
             Shopping Cart.
           </span>
         </div>
@@ -101,7 +133,6 @@ export default function Cart() {
             <>
               <div className="flex-[2] min-w-[400px] ">
                 {productDetails.map((data) => {
-                  console.log(data)
                   return (
                     <CartLeft
                       key={data.itemId} // Assuming itemId is unique and can be used as a key
@@ -115,20 +146,25 @@ export default function Cart() {
                   );
                 })}
               </div>
-              <CartRight tprice={totalPrice} ship={50} gst={10} />
+              <CartRight tprice={totalPrice} ship={50} gst={10} onDelete={DeleteAllItem} />
             </>
           ) : (
             <>
               <div className=" w-[90%] h-[60vh] flex-col shadow flex justify-center items-center mx-auto">
-
-                <img src="/Images/cart.webp" alt="cartimage" className=" w-48 " />
+                <img
+                  src="/Images/cart.webp"
+                  alt="cartimage"
+                  className=" w-48 "
+                />
                 <h1 className=" text-lg font-semibold mt-3 ">
                   Missing Cart items?
                 </h1>
-                <p className="text-sm font-medium text-slate-600 pt-1 pb-3">Add the items to buy the products. </p>
+                <p className="text-sm font-medium text-slate-600 pt-1 pb-3">
+                  Add the items to buy the products.{" "}
+                </p>
 
                 <Link
-                  to='/'
+                  to="/"
                   className="relative inline-flex items-center justify-center mt-2 p-4 px-4 py-2 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border border-blue-500 rounded-full shadow-md group"
                 >
                   <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-blue-500 group-hover:translate-x-0 ease">

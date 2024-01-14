@@ -94,7 +94,6 @@ function MyState(props) {
     }, []);
     return user;
   };
-
   const CurrentUser = GetUser();
 
   useEffect(() => {
@@ -119,7 +118,6 @@ function MyState(props) {
           // Handle the error if needed
         }
       } else {
-
       }
     };
 

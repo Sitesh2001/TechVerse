@@ -30,10 +30,4 @@
   ::-webkit-scrollbar-thumb:hover {
     background-color: #2563eb; /* Change color on hover */
   }
-  .orderScroll::-webkit-scrollbar-thumb {
-    background: transparent;
-  }
-  .orderScroll::-webkit-scrollbar-thumb:hover {
-    background: #2563eb;
-  }
 }

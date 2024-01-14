@@ -14,7 +14,10 @@ export const Log = () => {
 
   const context = useContext(myContext);
   const { CurrentUser } = context;
-  localStorage.setItem("userId", CurrentUser[0].id)
+
+  if (CurrentUser) {
+    localStorage.setItem("userId", CurrentUser[0].id)
+  }
 
   const Login = async (e) => {
     e.preventDefault();

@@ -14,7 +14,7 @@ const NewProducts = (p) => {
           <Link to={`/${data.category}/${data.id}`} className="flex-1"><img className="w-full h-full object-contain" src={data.image} alt="kux bhi lol" /></Link>
           <div className="flex-1 flex justify-center gap-y-1 flex-col"><Link to={`/${data.category}/${data.id}`} className=" capitalize text-base font-medium">{data.productname.slice(0,12)}..</Link>
           <p className=" text-sm font-medium text-blue-600">{data.rating}</p>
-          <p>Rs {data.price}</p></div>
+          <p>Rs. {data.price}</p></div>
         </div>
         })
       }       

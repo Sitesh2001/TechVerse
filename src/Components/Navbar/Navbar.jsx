@@ -6,28 +6,30 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { BsHandbag, BsQuestionCircle } from "react-icons/bs";
 import { auth } from "../../firebase";
-import { useSelector } from "react-redux";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart } from "../../redux/cartRedux";
 
 export const Navbar = () => {
-
   const [user, setUser] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sign, setSign] = useState(true);
   const navigate = useNavigate();
-  const cartQuantity = useSelector((state) => state.cart.quantity)
+  const cartQuantity = useSelector((state) => state.cart.quantity);
 
   const [highlighted, setHighlighted] = useState(false);
   const [previousCartQuantity, setPreviousCartQuantity] = useState(null);
+  const [modalData, setModalData] = useState({ title: "", content: "" });
 
   // context data
   const context = useContext(myContext);
-  const { islogged } = context;
-
+  const { islogged, CurrentUser } = context;
 
   useEffect(() => {
-    if (previousCartQuantity !== null && cartQuantity !== previousCartQuantity) {
+    if (
+      previousCartQuantity !== null &&
+      cartQuantity !== previousCartQuantity
+    ) {
       setHighlighted(true);
       setTimeout(() => {
         setHighlighted(false);
@@ -36,10 +38,13 @@ export const Navbar = () => {
     setPreviousCartQuantity(cartQuantity);
   }, [cartQuantity, previousCartQuantity]);
 
+  const dispatch = useDispatch();
   // logout
   const logout = () => {
     setTimeout(() => {
       auth.signOut().then(() => {
+        localStorage.clear();
+        dispatch(clearCart());
         navigate("/");
       });
     }, 300);
@@ -50,16 +55,8 @@ export const Navbar = () => {
     setUser(!user);
   };
 
-  const userPage = () => {
-    navigate("/user");
-  };
-
   const isCart = () => {
-    if (islogged) {
-      navigate("/cart/products");
-    } else {
-      openModal();
-    }
+    navigate("/cart/products");
   };
 
   // Search
@@ -72,8 +69,9 @@ export const Navbar = () => {
     window.location.href = `/brands?search=${searchTerm}`;
   };
 
-  // Cart Modal
-  const openModal = () => {
+  const openModal = (modalData) => {
+    setSign(modalData.bool);
+    setModalData(modalData);
     setIsModalOpen(true);
   };
 
@@ -81,16 +79,26 @@ export const Navbar = () => {
     setIsModalOpen(false);
   };
 
+  function scroll(){
+    document.querySelector("#footer").scrollIntoView({
+      behavior:"smooth"
+    })
+  }
+
   return (
     <nav className="bg-white border-gray-200 py-4 sticky top-0 z-50 ">
-      <Mymodal isOpen={isModalOpen} onClose={closeModal}>
+      <Mymodal isOpen={isModalOpen} onClose={closeModal} isSign={sign}>
         <div>
-          <h1 className="text-lg font-bold mb-2">Cart is Empty</h1>
-          <p>You have to log in for that</p>
+          <h1 className="text-lg font-bold mb-2">{modalData.title}</h1>
+          <h1>{modalData.number}</h1>
+          <p>{modalData.content}</p>
         </div>
       </Mymodal>
       <div className="w-[95%] m-auto flex flex-wrap gap-x-2 items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <Link
+          to="/"
+          className="flex items-center space-x-3 rtl:space-x-reverse"
+        >
           <img src="/logo/ecommerce.png" className="h-8" alt="TechVerse Logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             TechVerse
@@ -131,15 +139,26 @@ export const Navbar = () => {
           <ul className="flex items-center justify-center font-medium rtl:space-x-reverse">
             <li className={`flex relative items-center`}>
               <button
-                onClick={!islogged ? toggleUser : userPage}
+                onClick={
+                  !islogged
+                    ? toggleUser
+                    : () =>
+                        openModal({
+                          title: CurrentUser[0]?.username,
+                          content: CurrentUser[0]?.email,
+                          number: CurrentUser[0]?.number,
+                          bool: false,
+                        })
+                }
                 className="block p-1 text-[1.7rem] text-blue-600 bg-transparent hover:scale-125 transition-all"
               >
                 <FaUserCircle />
               </button>
               {!islogged && (
                 <div
-                  className={`flex text-center items-center transition-all duration-500 scale-x-0 w-0 ${user ? "scale-x-[1] w-20 " : null
-                    } `}
+                  className={`flex text-center items-center transition-all duration-500 scale-x-0 w-0 ${
+                    user ? "scale-x-[1] w-20 " : null
+                  } `}
                 >
                   <Link className="flex-1 user p-1 px-2" to="/register">
                     <button className="text-sm text-slate-600 hover:text-blue-600 relative">
@@ -155,9 +174,9 @@ export const Navbar = () => {
               )}
             </li>
             {!islogged ? (
-              <li className="mx-4 ">
-                <button className={`flex text-center items-center transition-all duration-500 scale-x-0 w-0 ${user ? "scale-x-[1] w-20 " : null
-                  } `}
+              <li className="ml-3 ">
+                <button onClick={scroll} 
+                  className={`block p-1 text-[1.7rem] scroll-smooth hover:text-blue-600 bg-transparent hover:scale-125 transition-all`}
                 >
                   <BsQuestionCircle />
                 </button>
@@ -166,19 +185,28 @@ export const Navbar = () => {
               <></>
             )}
             <li className="mx-4 ">
-
-
               <button
-                onClick={isCart}
-                className={` ${cartQuantity > 0 ? " text-blue-600" : " text-slate-600"
-                  } block relative p-1 text-center text-[1.7rem] bg-transparent hover:scale-125 transition-all ${highlighted ? "highlight" : ""
-                  }`}>
+                onClick={
+                  !islogged
+                    ? () =>
+                        openModal({
+                          title: "Cart is Empty",
+                          content: "Log in to see Cart",
+                          bool: true,
+                        })
+                    : isCart
+                }
+                className={` ${
+                  cartQuantity > 0 ? " text-blue-600" : " text-slate-600"
+                } block relative p-1 text-center text-[1.7rem] bg-transparent hover:scale-125 transition-all ${
+                  highlighted ? "highlight" : ""
+                }`}
+              >
                 <BsHandbag />
                 <span className="absolute normal-nums font-salar font-medium top-[12px] right-[22px] h-0 w-0 text-sm ">
                   {cartQuantity}
                 </span>
               </button>
-
             </li>
             {islogged && (
               <li>

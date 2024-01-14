@@ -10,6 +10,7 @@ import MyState from "./context/Data/myState";
 import Products from "./Components/HomeItems/Products";
 import Productpage from "./Pages/Productpage";
 import { Brands } from "./Components/Stocks/Brands";
+import Allproducts from "./Components/HomeItems/Allproducts";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
           <Route exact path="/" element = {<Home/>} />
           <Route path="/login" element = {<LogIn/>} />
           <Route path="/register" element = {<SignUp/>}/>
-          <Route path="/order" element = {<Order/>} />
+          <Route path="/order/:id" element = {<Order/>} />
           <Route path="/payment" element = {<Payment/>} />
           <Route path="/cart/:id" element = {<Cart/>} />
           <Route path="*" element = {<NoPage/>} />
@@ -33,6 +34,7 @@ function App() {
           <Route path="/topProducts" element = {<Products type = 'TopProducts' />}/>
           <Route path="/newProducts" element = {<Products type = 'NewProducts' />}/>
           <Route path="/topSellings" element = {<Products type = 'TopSellings' />}/>
+          <Route path="/allproducts" element = {<Allproducts type = 'Allproducts' />}/>
           <Route path="/:type/:id" element = {<Productpage/>}/>
           <Route path="/brands" element = {<Brands/>}/>
         </Routes>
