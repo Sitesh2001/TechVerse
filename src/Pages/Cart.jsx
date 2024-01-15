@@ -17,8 +17,8 @@ import { useDispatch } from "react-redux";
 import { clearCart } from "../redux/cartRedux";
 import ScrollToTop from "../Components/HomeItems/ScrollToTop";
 
-export default function Cart() {
-  const [productDetails, setProductDetails] = useState([]);
+export default function Cart({ setProductDetails, productDetails }) {
+
 
   const dispatch = useDispatch();
 

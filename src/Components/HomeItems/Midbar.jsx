@@ -107,7 +107,7 @@ export const Midbar = () => {
   };
 
   return (
-    <div className=" w-full md:w-[95%] mx-auto mt-10">
+    <div className=" w-full md:w-[95%] mx-auto mt-10" id="midbar">
       <div className="flex gap-x-4 ">
         <div className=" hidden md:block h-fit sticky top-8">
           <Categories />

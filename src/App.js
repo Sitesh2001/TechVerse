@@ -12,10 +12,12 @@ import Productpage from "./Pages/Productpage";
 import { Brands } from "./Components/Stocks/Brands";
 import Allproducts from "./Components/HomeItems/Allproducts";
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useState } from "react";
 
 function App() {
+  const [productDetails, setProductDetails] = useState([]);
   return (
-    <div className="App font-[poppins]">
+    <div className="App font-[poppins]" id="body">
       <MyState>
       <Router>
         <Routes>
@@ -24,7 +26,8 @@ function App() {
           <Route path="/register" element = {<SignUp/>}/>
           <Route path="/order/:id" element = {<Order/>} />
           <Route path="/payment" element = {<Payment/>} />
-          <Route path="/cart/:id" element = {<Cart/>} />
+          <Route path="/cart/:id" element = {<Cart setProductDetails= {setProductDetails} productDetails = {productDetails}/>} />
+          <Route path="/payment/:id" element = {<Payment setProductDetails= {setProductDetails} productDetails = {productDetails}/>} />
           <Route path="*" element = {<NoPage/>} />
           <Route path="/mobiles" element = {<Products type = "Mobile" alias = "Smart Phones"/>}/>
           <Route path="/laptops" element = {<Products type = "Laptop" alias = "Laptops" />}/>

@@ -75,11 +75,11 @@ export default function Order() {
             {productDetails?.map((data,ind) => {
               
               return (
-                <div key={ind} className="flex-1 h-36 flex p-4 border-b border-slate-100">
-                  <div className=" basis-28 ">
+                <div key={ind} className=" flex p-4 border-b border-slate-100 ">
+                  <div className="w-[112px]">
                     <img
                       src={data.image}
-                      className=" object-contain"
+                      className=" object-contain w-full h-full"
                       alt="images"
                     />
                   </div>
