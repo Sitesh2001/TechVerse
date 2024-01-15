@@ -59,9 +59,9 @@ export default function Order() {
 
   return (
     <Layout>
-      <main className="flex w-[95%] gap-x-5 mx-auto mt-7 ">
+      <main className="flex w-[95%] gap-x-5 flex-col md:flex-row flex-wrap mx-auto mt-7 ">
         <ScrollToTop/>
-        <div className="flex-[3] relative flex flex-col gap-y-3 ">
+        <div className="md:flex-[3] flex-1 relative flex flex-col gap-y-3 ">
           <h1 className=" absolute -top-8 text-sm font-semibold ">
             <span className="text-slate-600 text-lg">OrderId</span> #{id}
           </h1>
@@ -177,7 +177,7 @@ export default function Order() {
             boxShadow:
               "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
           }}
-          className="flex-1 p-3 flex flex-col gap-y-6 rounded-sm "
+          className="flex-1 min-w-[270px] p-3 flex flex-col gap-y-6 rounded-sm "
         >
           <h1 className=" text-xl font-semibold -tracking-tight">Customer</h1>
           <div className="flex gap-x-4 pb-1 items-center border-b border-slate-100">

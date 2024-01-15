@@ -64,13 +64,11 @@ export default function Payment({ productDetails, setProductDetails }) {
     }
   };
 
-
-  console.log(productDetails)
   const totalPrice = productDetails.reduce(
     (sum, item) => sum + Number(item.price) * Number(item.quantity),
     0
   );
-  console.log(productDetails)
+
   return (
     <Layout>
       <div className=" mt-10 ">
@@ -103,7 +101,6 @@ export default function Payment({ productDetails, setProductDetails }) {
                       onDelete={handleDeleteItem}
                       setProductDetails={setProductDetails}
                       productDetails={productDetails}
-
                       index={index}
                     />
                   );

@@ -1,26 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { decreseQuantity } from "../../redux/cartRedux";
 
 const PaymentLeft = (prop) => {
-    // context data
-    const dispatch = useDispatch();
-    const removeItem = () => {
-        prop.onDelete(prop.itemId);
-        console.log(prop)
-        dispatch(decreseQuantity(prop.productid));
-    };
-
-    const changeQuantity = (e) => {
-        const updatedProductDetails = [...prop.productDetails];
-        updatedProductDetails[prop.index] = {
-            ...updatedProductDetails[prop.index],
-            quantity: e.target.value,
-        };
-
-        prop.setProductDetails(updatedProductDetails);
-    }
-    console.log()
     return (
         <div className="border-b h-[163px] border-slate-300 py-4 pr-3 flex gap-4 m-5">
             <div className="basis-[170px] h-[130px] rounded">

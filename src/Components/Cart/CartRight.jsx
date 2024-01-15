@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import toast, { Toaster } from 'react-hot-toast';
+import React from 'react'
 import { useNavigate } from 'react-router';
 const CartRight = (prop) => {
 
     const Navigate = useNavigate();
-
-
 
     const checkout = () => {
         Navigate("/payment/" + localStorage.getItem("userId"))
@@ -18,7 +11,6 @@ const CartRight = (prop) => {
     return (
         <div className='flex flex-col flex-1 p-5 pb-3 max-h-[400px] mx-auto max-w-[400px] min-w-[300px] shadow'>
             <h1 className='text-xl '>Order Summary</h1>
-            <Toaster position="top-center" reverseOrder={true} />
             <div className='flex justify-between items-center text-sm text-slate-500 py-4 border-slate-300 border-b'>
                 <p>Subtotal</p>
                 <p>Rs. {prop.tprice}</p>

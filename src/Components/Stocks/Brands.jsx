@@ -3,19 +3,29 @@ import { Layout } from "../Layout/Layout";
 import myContext from "../../context/Data/myContext";
 import { IoMdStar } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { BsHeart } from "react-icons/bs";
 import { BsBagPlus } from "react-icons/bs";
 import { SubNav } from "../Navbar/SubNav";
 import ScrollToTop from "../HomeItems/ScrollToTop";
 import Skeleton from "react-loading-skeleton"; // Import the skeleton component
+import Mymodal from "../modal/Mymodal";
+import { Toaster, toast } from "react-hot-toast";
+import { increaseQuantity } from "../../redux/cartRedux";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { useDispatch } from "react-redux";
+
 
 export const Brands = () => {
   const urlparams = new URLSearchParams(window.location.search);
   const context = useContext(myContext);
-  const { productsWithId } = context;
+  const {islogged,CurrentUser, productsWithId } = context;
   const urldata = urlparams.get('searchTerm');
   const searchdata = urlparams.get('search');
   const [searchResults, setSearchResults] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,9 +66,55 @@ export const Brands = () => {
     return ratingElements;
   };
 
+  const addtoCart = async (id,category) => {
+    if (islogged) {
+      setLoading(true);
+      try {
+        const cartRef = doc(collection(db, "cart"), CurrentUser[0].uid);
+        const subCollectionRef = collection(cartRef, "UserItems");
+
+        // Create a new document reference within the UserItems subcollection
+        const newDocRef = doc(subCollectionRef);
+        // Set the data directly to the new document reference using setDoc
+        await setDoc(newDocRef, {
+          userId: CurrentUser[0].uid,
+          productid: id,
+          category: category,
+          quantity: 1,
+        });
+        dispatch(increaseQuantity(id))
+        setLoading(false);
+
+        toast.success("Product added to cart successfully",)
+      } catch (error) {
+        setLoading(false);
+        toast.error("Error adding product to cart")
+        console.error(error);
+      }
+    } else {
+      openModal();
+    }
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Layout>
       <SubNav />
+      <Toaster position="top-center" reverseOrder={true} />
+      <Mymodal isOpen={isModalOpen} onClose={closeModal}>
+            {/* Content for your modal */}
+            <div>
+              <h1 className="text-lg font-bold mb-2">Can not acces cart</h1>
+              <p>You have to log in to buy</p>
+            </div>
+          </Mymodal>
       <div className=" md:w-[90%] md:mx-auto mt-20 ">
         <ScrollToTop />
         <div className=" mb-5">
@@ -67,7 +123,7 @@ export const Brands = () => {
           </h1>
         </div>
         <div className=" flex flex-wrap justify-around gap-5 items-center">
-          {searchResults.length<0 ? ( // Check if loading is true, show skeletons
+          {searchResults.length<1 ? ( // Check if loading is true, show skeletons
             Array.from({ length: 8 }).map((_, index) => (
               <div key={index} className="w-full min-h-[320px] max-h-[320px] relative group max-w-[250px] bg-white border border-gray-200 rounded-lg shadow-sm">
                 <Skeleton height={200} />
@@ -124,9 +180,12 @@ export const Brands = () => {
                 </div>
                 <div className=" absolute right-[10px] top-[10px] translate-x-12 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition duration-200 ease ">
                   <div>
-                    <button className="active:bg-blue-300 active:text-white p-2 rounded cursor-pointer text-black border border-slate-300 hover:text-blue-600 ">
+                    {
+                      loading?<></>:
+                      <button onClick={() => addtoCart(filterdata?.productid, filterdata?.category)} className="active:bg-blue-300 active:text-white p-2 rounded cursor-pointer text-black border border-slate-300 hover:text-blue-600 ">
                       <BsBagPlus />
                     </button>
+                    }                   
                   </div>
                 </div>
               </div>

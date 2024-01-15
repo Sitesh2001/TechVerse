@@ -15,6 +15,7 @@ import { increaseQuantity } from "../redux/cartRedux";
 import ScrollToTop from "../Components/HomeItems/ScrollToTop";
 import CartRight from "../Components/Cart/CartRight";
 import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const Productpage = () => {
   const { type, id } = useParams();
@@ -172,7 +173,7 @@ const Productpage = () => {
               background:
                 "linear-gradient(70deg, rgb(255, 254, 254) 0%, rgb(250, 250, 250) 35%, rgb(255, 255, 255) 100%)",
             }}
-            className="flex p-1 gap-x-2 md:w-[90%] m-auto "
+            className="flex p-1 gap-x-2 md:w-[90%] m-auto flex-wrap "
           >
             <div className=" w-[300px]">
               <img
@@ -181,7 +182,7 @@ const Productpage = () => {
                 alt=""
               />
             </div>
-            <div className="px-5 pb-8 pt-10 flex gap-y-4 flex-col flex-1">
+            <div className="px-5 pb-8 pt-10 min-w-[362px] flex gap-y-4 flex-col flex-1">
               <div className=" text-4xl font-medium mb-0">
                 {product.productname}
               </div>

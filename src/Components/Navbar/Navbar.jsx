@@ -94,7 +94,7 @@ export const Navbar = () => {
           <p>{modalData.content}</p>
         </div>
       </Mymodal>
-      <div className="w-[95%] m-auto flex flex-wrap gap-x-2 items-center justify-between">
+      <div className="w-[95%] m-auto flex flex-wrap gap-4 items-center justify-between">
         <Link
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -135,7 +135,7 @@ export const Navbar = () => {
             />
           </div>
         </div>
-        <div className="items-center justify-between md:flex hidden " id="navbar-search">
+        <div className="items-center justify-between flex vsm:mx-auto md:m-0 " id="navbar-search">
           <ul className="flex items-center justify-center font-medium rtl:space-x-reverse">
             <li className={`flex relative items-center`}>
               <button

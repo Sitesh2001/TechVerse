@@ -16,10 +16,11 @@ import { Toaster, toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../redux/cartRedux";
 import ScrollToTop from "../Components/HomeItems/ScrollToTop";
+import Skeleton from "react-loading-skeleton";
 
 export default function Cart({ setProductDetails, productDetails }) {
-
-
+  // Loading state
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   // context data
@@ -30,7 +31,7 @@ export default function Cart({ setProductDetails, productDetails }) {
     try {
       const itemRef = doc(db, `cart/${CurrentUser[0].uid}/UserItems`, itemId);
       await deleteDoc(itemRef);
-      toast.success("Item Deleted Successfully");
+      toast.success("Item Removed Successfully");
       setProductDetails(
         productDetails.filter((item) => item.itemId !== itemId)
       );
@@ -47,7 +48,10 @@ export default function Cart({ setProductDetails, productDetails }) {
   const DeleteAllItem = async () => {
     try {
       // Delete the entire 'UserItems' collection for the user
-      const collectionRef = collection(db, `cart/${CurrentUser[0].uid}/UserItems`);
+      const collectionRef = collection(
+        db,
+        `cart/${CurrentUser[0].uid}/UserItems`
+      );
       const querySnapshot = await getDocs(collectionRef);
 
       querySnapshot.forEach((doc) => {
@@ -69,6 +73,7 @@ export default function Cart({ setProductDetails, productDetails }) {
     const fetchData = async () => {
       if (islogged && CurrentUser) {
         try {
+          setLoading(true);
           const subCollectionRef = collection(
             db,
             `cart/${CurrentUser[0].uid}/UserItems`
@@ -94,26 +99,27 @@ export default function Cart({ setProductDetails, productDetails }) {
                 ...productData,
                 productId: item.productid,
                 itemId: dataDoc.id, // Add itemId property with dataDoc.id
-                quantity: item.quantity
+                quantity: item.quantity,
               });
             }
           }
           setProductDetails(productDetailsArray);
-
         } catch (error) {
           console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false); // Set loading to false after fetching data
         }
       }
     };
 
     fetchData();
-  }, [islogged, CurrentUser]);
+  }, [islogged, CurrentUser, setProductDetails]);
 
   const totalPrice = productDetails.reduce(
     (sum, item) => sum + Number(item.price) * Number(item.quantity),
     0
   );
-  console.log(productDetails)
+  console.log(productDetails);
   return (
     <Layout>
       <div className=" mt-10 ">
@@ -124,14 +130,80 @@ export default function Cart({ setProductDetails, productDetails }) {
           className="w-[90%] m-auto text-center min-h-16 py-5 rounded"
         >
           {" "}
-          <span
-            className="text-lg font-medium cursor-pointer text-blue-500 px-2 border-b border-blue-500"
-          >
+          <span className="text-lg font-medium cursor-pointer text-blue-500 px-2 border-b border-blue-500">
             Shopping Cart.
           </span>
         </div>
         <div className=" flex w-[90%] gap-x-10 flex-wrap mx-auto mt-4 ">
-          {productDetails.length > 0 ? (
+          {loading ? (
+            <>
+              <div className="flex-[2] min-w-[400px]">
+                <div className="border-b h-[163px] border-slate-300 py-4 pr-3 flex gap-4 m-5">
+                  <div className="basis-[170px] h-[130px] rounded">
+                    <Skeleton height={130} />
+                  </div>
+                  <div className="flex-2 flex flex-col justify-between gap-2">
+                    <div className="flex flex-col">
+                      <Skeleton width={100} height={20} />
+                      <Skeleton width={80} height={16} />
+                    </div>
+                    <div className="flex items-center gap-8">
+                      <Skeleton width={30} height={16} />
+                      <div className="relative">
+                        <Skeleton width={40} height={20} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-1 flex flex-col justify-between text-right">
+                    <Skeleton width={80} height={20} />
+                    <Skeleton width={60} height={16} />
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col flex-1 p-5 pb-3 max-h-[400px] mx-auto max-w-[400px] min-w-[300px] shadow">
+                <h1 className="text-xl ">
+                  <Skeleton width={100} height={20} />
+                </h1>
+                <div className="flex justify-between items-center text-sm text-slate-500 py-4 border-slate-300 border-b">
+                  <p>
+                    <Skeleton width={80} height={16} />
+                  </p>
+                  <p>
+                    <Skeleton width={60} height={16} />
+                  </p>
+                </div>
+                <div className="flex justify-between items-center text-sm text-slate-500 py-4 border-slate-300 border-b">
+                  <p>
+                    <Skeleton width={120} height={16} />
+                  </p>
+                  <p>
+                    <Skeleton width={60} height={16} />
+                  </p>
+                </div>
+                <div className="flex justify-between items-center text-sm text-slate-500 py-4 border-slate-300 border-b">
+                  <p>
+                    <Skeleton width={80} height={16} />
+                  </p>
+                  <p>
+                    <Skeleton width={60} height={16} />
+                  </p>
+                </div>
+                <div className="flex justify-between items-center text-slate-800 font-[500] py-4 border-slate-300 border-b">
+                  <p>
+                    <Skeleton width={80} height={16} />
+                  </p>
+                  <p>
+                    <Skeleton width={60} height={16} />
+                  </p>
+                </div>
+                <Skeleton
+                  width={120}
+                  height={40}
+                  className="text-white bg-gradient-to-r mt-5 align-bottom from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br transition-all duration-100 active:translate-y-1 active:shadow-none focus:outline-none shadow-lg shadow-blue-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                />
+              </div>
+            </>
+          ) : productDetails.length > 0 ? (
             <>
               <div className="flex-[2] min-w-[400px] ">
                 {productDetails.map((data, index) => {
@@ -151,7 +223,12 @@ export default function Cart({ setProductDetails, productDetails }) {
                   );
                 })}
               </div>
-              <CartRight tprice={totalPrice} ship={50} gst={10} onDelete={DeleteAllItem} />
+              <CartRight
+                tprice={totalPrice}
+                ship={50}
+                gst={10}
+                onDelete={DeleteAllItem}
+              />
             </>
           ) : (
             <>
