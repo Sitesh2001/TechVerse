@@ -15,6 +15,7 @@ const cartSlice = createSlice({
     },
     decreseQuantity: (state, action) => {
       state.quantity -= 1;
+      console.log(action.payload)
       state.productsId = state.productsId.filter((data) => {
         return action.payload !== data;
       });

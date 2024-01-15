@@ -135,7 +135,7 @@ export const Navbar = () => {
             />
           </div>
         </div>
-        <div className="items-center justify-between flex " id="navbar-search">
+        <div className="items-center justify-between md:flex hidden " id="navbar-search">
           <ul className="flex items-center justify-center font-medium rtl:space-x-reverse">
             <li className={`flex relative items-center`}>
               <button

@@ -7,29 +7,43 @@ import { BsHeart } from "react-icons/bs";
 import { BsBagPlus } from "react-icons/bs";
 import { SubNav } from "../Navbar/SubNav";
 import ScrollToTop from "../HomeItems/ScrollToTop";
+import Skeleton from "react-loading-skeleton"; // Import the skeleton component
 
 export const Brands = () => {
-  const urlparams = new URLSearchParams(window.location.search)
+  const urlparams = new URLSearchParams(window.location.search);
   const context = useContext(myContext);
   const { productsWithId } = context;
-  const urldata = urlparams.get("searchTerm")
-  const searchdata = urlparams.get("search")
+  const urldata = urlparams.get('searchTerm');
+  const searchdata = urlparams.get('search');
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    if (urldata !== null) {
-      const filterBrand = productsWithId.filter((ele) => ele.brand === urldata);
-      setSearchResults(filterBrand);
-    }
-    else{
-        const filteredProducts = productsWithId.filter((product) =>
-        product.productname.toLowerCase().includes(searchdata.toLowerCase())
-      );
-      setSearchResults(filteredProducts);
-    }
-
+    const fetchData = async () => {
+      try {
+  
+        let filteredProducts;
+  
+        if (urldata !== null) {
+          const filterBrand = productsWithId.filter((ele) => ele.brand === urldata);
+          filteredProducts = filterBrand;
+        } else {
+          filteredProducts = productsWithId.filter(
+            (product) =>
+              product.productname.toLowerCase().includes(searchdata.toLowerCase()) ||
+              product.category.toLowerCase().includes(searchdata.toLowerCase())
+          );
+        }
+  
+        setSearchResults(filteredProducts);
+      } catch (error) {
+        console.error(error);
+      } 
+    };
+  
+    fetchData();
   }, [urldata, searchdata, productsWithId]);
 
+  
   const renderRating = (rate) => {
     const ratingElements = [];
     for (let i = 1; i <= 5; i++) {
@@ -44,17 +58,44 @@ export const Brands = () => {
 
   return (
     <Layout>
-        <SubNav/>
+      <SubNav />
       <div className=" md:w-[90%] md:mx-auto mt-20 ">
-        <ScrollToTop/>
+        <ScrollToTop />
         <div className=" mb-5">
           <h1 className=" text-lg font-medium  border-b border-slate-300 py-2 text-slate-700 ">
-            {urldata}
+            {urldata || searchdata}
           </h1>
         </div>
         <div className=" flex flex-wrap justify-around gap-5 items-center">
-          {searchResults.map((filterdata, index) => {
-            return (
+          {searchResults.length<0 ? ( // Check if loading is true, show skeletons
+            Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="w-full min-h-[320px] max-h-[320px] relative group max-w-[250px] bg-white border border-gray-200 rounded-lg shadow-sm">
+                <Skeleton height={200} />
+                <div className="px-5 flex flex-col pb-5">
+                  <Skeleton height={16} width={150} />
+                  <Skeleton height={12} width={100} />
+                  <div className="flex items-center space-y-1 space-x-1 rtl:space-x-reverse">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Skeleton key={i} height={18} width={18} />
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between mt-2.5 mb-2">
+                    <Skeleton height={12} width={60} />
+                  </div>
+                </div>
+                <div className="absolute right-[10px] top-[10px] translate-x-12 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition duration-200 ease ">
+                  <div>
+                    <Skeleton height={25} width={25} circle={true} />
+                  </div>
+                  <div>
+                    <Skeleton height={25} width={25} circle={true} />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            // Render actual data when not loading
+            searchResults.map((filterdata, index) => (
               <div key={index} className="w-full min-h-[320px] max-h-[320px] relative group max-w-[250px] bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg dark:bg-gray-800 dark:border-gray-700">
                 <Link to={`/${filterdata.category}/${filterdata.id}`}>
                   <img
@@ -83,19 +124,14 @@ export const Brands = () => {
                 </div>
                 <div className=" absolute right-[10px] top-[10px] translate-x-12 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition duration-200 ease ">
                   <div>
-                    <button className=" active:bg-red-300 active:text-white p-2 rounded cursor-pointer mb-3 text-black border border-slate-300 hover:text-red-500 ">
-                      <BsHeart />
-                    </button>
-                  </div>
-                  <div>
                     <button className="active:bg-blue-300 active:text-white p-2 rounded cursor-pointer text-black border border-slate-300 hover:text-blue-600 ">
                       <BsBagPlus />
                     </button>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))
+          )}
         </div>
       </div>
     </Layout>

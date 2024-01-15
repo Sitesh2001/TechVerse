@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 const CartRight = (prop) => {
@@ -11,6 +11,9 @@ const CartRight = (prop) => {
 
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
     const productIds = useSelector((state) => state.cart.productsId)
+    const dispatch = useDispatch();
+
+
     function createOrder(data, actions) {
         return actions.order
             .create({
@@ -25,13 +28,12 @@ const CartRight = (prop) => {
             });
     }
 
-    console.log(localStorage.getItem("userId"));
-
     function onApprove(data, actions) {
         return actions.order.capture().then(async function (details) {
            const orderRef = await createOrderInDb()
            await prop.onDelete()
            toast.success("Ordered Success")
+        //    dispatch(clear)
            Navigate(`/order/${orderRef}`)
         });
     }

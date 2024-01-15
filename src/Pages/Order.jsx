@@ -28,7 +28,9 @@ export default function Order() {
             const orderData = docSnapshot.data();
             const array = [];
             for (let productId of orderData.products) {
+              
               const product = productsWithId.find((data) => data.id === productId);
+              
               if (product) {
                 array.push(product);
               }
@@ -57,11 +59,11 @@ export default function Order() {
 
   return (
     <Layout>
-      <main className="flex w-[95%] gap-x-5 mx-auto mt-6 ">
+      <main className="flex w-[95%] gap-x-5 mx-auto mt-7 ">
         <ScrollToTop/>
         <div className="flex-[3] relative flex flex-col gap-y-3 ">
-          <h1 className=" absolute -top-7 text-lg font-semibold ">
-            <span className="text-slate-600">OrderId</span> #12345
+          <h1 className=" absolute -top-8 text-sm font-semibold ">
+            <span className="text-slate-600 text-lg">OrderId</span> #{id}
           </h1>
           <div
             style={{
@@ -77,7 +79,7 @@ export default function Order() {
                   <div className=" basis-28 ">
                     <img
                       src={data.image}
-                      className=" h-full w-full object-contain"
+                      className=" object-contain"
                       alt="images"
                     />
                   </div>

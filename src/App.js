@@ -11,6 +11,7 @@ import Products from "./Components/HomeItems/Products";
 import Productpage from "./Pages/Productpage";
 import { Brands } from "./Components/Stocks/Brands";
 import Allproducts from "./Components/HomeItems/Allproducts";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 function App() {
   return (

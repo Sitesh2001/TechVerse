@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import {useSelector, useDispatch } from "react-redux";
 import { decreseQuantity } from "../../redux/cartRedux";
 
 const CartBox = (prop) => {
@@ -7,6 +7,7 @@ const CartBox = (prop) => {
   const dispatch = useDispatch();
   const removeItem = () => {
     prop.onDelete(prop.itemId);
+    console.log(prop)
     dispatch(decreseQuantity(prop.productid));
   };
 
