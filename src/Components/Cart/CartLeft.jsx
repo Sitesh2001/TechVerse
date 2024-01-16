@@ -32,7 +32,8 @@ const CartBox = (prop) => {
       <div className="flex-2 flex flex-col justify-between gap-2">
         <div className="flex flex-col">
           <h1 className="text-lg font-[500]">{prop.pname}</h1>
-          <p className="text-slate-500 py-1">Tags</p>
+          <p className="text-slate-500 py-1">{prop.brand}</p>
+          <p className="text-slate-500 py-1">{prop.year}</p>
         </div>
         <div className="flex items-center gap-8">
           <p className="text-slate-500">Qty</p>

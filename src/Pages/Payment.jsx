@@ -99,6 +99,8 @@ export default function Payment({ productDetails, setProductDetails }) {
                       itemId={data.itemId}
                       productid={data.productId}
                       onDelete={handleDeleteItem}
+                      brand = {data.brand}
+                      year = {data.warranty}
                       setProductDetails={setProductDetails}
                       productDetails={productDetails}
                       index={index}
@@ -106,7 +108,7 @@ export default function Payment({ productDetails, setProductDetails }) {
                   );
                 })}
               </div>
-              <PaymentRight tprice={totalPrice} ship={50} gst={10} onDelete={DeleteAllItem} />
+              <PaymentRight tprice={totalPrice} ship={20} gst={0} onDelete={DeleteAllItem} />
             </>
           ) : (
             <>

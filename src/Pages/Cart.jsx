@@ -216,6 +216,8 @@ export default function Cart({ setProductDetails, productDetails }) {
                       itemId={data.itemId}
                       productid={data.productId}
                       onDelete={handleDeleteItem}
+                      brand = {data.brand}
+                      year = {data.warranty}
                       setProductDetails={setProductDetails}
                       productDetails={productDetails}
                       index={index}
@@ -225,8 +227,8 @@ export default function Cart({ setProductDetails, productDetails }) {
               </div>
               <CartRight
                 tprice={totalPrice}
-                ship={50}
-                gst={10}
+                ship={20}
+                gst={0}
                 onDelete={DeleteAllItem}
               />
             </>
