@@ -84,7 +84,7 @@ const ProductItems = (prop) => {
           </Mymodal>
       {
         prop.items?
-        <div className="w-full min-h-[320px] max-h-[320px] relative group max-w-[250px] bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full min-h-[320px] max-h-[320px] relative group max-w-[200px] bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg dark:bg-gray-800 dark:border-gray-700">
       <ScrollToTop/>
       <Link to={`/${prop.type}/${prop.items.id}`}>
         <img

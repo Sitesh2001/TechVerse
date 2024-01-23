@@ -46,7 +46,7 @@ export default function Banner(prop) {
             />
           </div>
         ))}
-        <div className=" text-white bg-transparent p-10 left-16 top-24 text-left w-[500px] absolute z-40 ">
+        <div className="hidden md:block text-white bg-transparent p-10 left-16 top-24 text-left w-[500px] absolute z-40 ">
           <h1 className=" text-2xl md:text-4xl uppercase font-bold [word-spacing:15px] ">Enjoy Lower Prices</h1>
           <p className=" text-xl md:text-2xl font-semibold ">On Limited Devices</p>
           <button type="button" onClick={scroll} className="text-white mt-4 bg-slate-600 hover:bg-[#24292F]/90 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
